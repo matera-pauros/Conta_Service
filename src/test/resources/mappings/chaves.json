@@ -1,0 +1,65 @@
+{
+  "mappings": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "/api/bacen/chaves",
+        "port": 9002,
+        "headers": {
+          "Content-Type": {
+            "contains": "application/json"
+          }
+        },
+        "bodyPatterns": [
+          {
+            "equalToJson": "{\"chave\":\"samuel@pix.com\",\"ativa\":true\n}",
+            "ignoreArrayOrder": true,
+            "ignoreExtraElements": true
+          }
+        ]
+      },
+      "response": {
+        "status": 201,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": {
+            "chave": "samuel@pix.com",
+            "ativa": true
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "/api/bacen/chaves",
+        "port": 9002,
+        "headers": {
+          "Content-Type": {
+            "contains": "application/json"
+          }
+        },
+        "bodyPatterns": [
+          {
+            "equalToJson": "{\n\"chave\":\"samuel-erro-bacen@pix.com\",\"ativa\":true\n}",
+            "ignoreArrayOrder": true,
+            "ignoreExtraElements": true
+          }
+        ]
+      },
+      "response": {
+        "status": 409,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": {
+          "type": "http://localhost/9001/document/conta-nao-existe",
+          "title": "Chave duplicada",
+          "status": 409,
+          "detail": "A Chave: samuel-erro-bacen, já está cadastrada no bacen.",
+          "instance": "/api/bacen/chaves"
+        }
+      }
+    }
+  ]
+}
